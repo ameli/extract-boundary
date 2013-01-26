@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Extract Boundary : Extract boundary of 2D grids" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Extract Boundary</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ameli/extract-boundary">View on GitHub</a>
+
+          <h1 id="project_title">Extract Boundary</h1>
+          <h2 id="project_tagline">Extract boundary of 2D grids</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/ameli/extract-boundary/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ameli/extract-boundary/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>This is user guide of Extract Boundary program for two dimensional grids. This program can be used as ParaView plugin or a stand alone program. Users will find building and installation process and usage examples in both terminal and ParaView.</p>
+
+<h1>Introduction</h1>
+
+<p>This package has been created to facilitate ParaView users that interact with two dimensional data grids. This package is utilized as a ParaView plugin, so the end users could take advantage of it as a new Filter. The <em>Extract Boundary</em> filter extracts boundaries of a 2D grid. It is robust to concave geometries, unusual cell links in a boundary point and acute and narrow bay-like shapes. Furthermore, user may opt for extracting all inner boundaries, such as lakes. This filter also identifies points with zero velocity. Inward or outward normal vectors are also calculated at each point.</p>
+
+<p>The program accepts various grid types such as structured or unstructured grids. Also it works well with different two dimensional cell types, for instance triangular, polygons, etc. Moreover, multiple file formats as supported. Common file formats are legacy <code>*.vtk</code> and binary <code>*.vtu</code> extensions.</p>
+
+<h1>Build Source</h1>
+
+<p>User can build the code from source. You can obtain the source code from <a href="https://github.com/ameli/extractboundary">github repository</a>. Please install <code>git</code> package:</p>
+
+<p><code>sudo apt-get install git</code></p>
+
+<p>Then, create a build directory and download the source code inside the build directory:
+\begin{verbatim}
+$ mkdir /tmp/ExtractBoundary
+$ cd /tmp/ExtractBoundary
+$ git clone git://github.com/ameli/extract-boundary
+\end{verbatim}
+Now, build the code:
+\begin{verbatim}
+$ cmake .
+$ make
+$ sudo make install
+$ cd ..
+$ rm -r /tmp/ExtractBoundary
+\end{verbatim}
+Installation is system-wide for all users.</p>
+
+<p>% --------------
+% Install Binary
+% --------------</p>
+
+<p>\section{Install Binary}
+You may use binary package instead of building code from source. Binary installation is available for Ubuntu operating system. Follow these commands in Ubuntu terminal:
+\begin{verbatim}
+$ sudo add-apt-repository ppa:ameli/extractboundary
+$ sudo apt-get update
+$ sudo apt-get install extractboundary
+\end{verbatim}</p>
+
+<p>% -------
+% Options
+% -------</p>
+
+<p>\section{Options}
+Filter has the following options:
+\begin{description}
+    \item 
+    [Search Boundary Mode] can be Outer boundary or outer and all inner boundaries. Default is on searching only outer boundaries, which is $\mathcal{O}(\sqrt{n})$. Inner and outer boundary search is in order of $\mathcal{O}(n)$.</p>
+
+<pre><code>\item
+[Extract Velocity Boundary] is boolean. Default is on \texttt{true}.
+
+\item
+[Calculate Normals] is boolean. Default value is set to \texttt{true}.
+
+\item
+[Normals Outward] is boolean. Default value is set to \texttt{false}.
+</code></pre>
+
+<p>\end{description}</p>
+
+<p>% -------------
+% Program Usage
+% -------------</p>
+
+<p>\section{Program Usage}
+You can use the program either in terminal or as a ParaView plugin. Here are examples to use it in terminal:
+\begin{verbatim}
+$ extractboundary /input-path/inputfile.vtk /output-path/outputfile.vtk
+\end{verbatim}
+You can also define only output filename without path. In this case, program writes output file in the same directory of input path.
+\begin{verbatim}
+$ extractboundary /input-path/inputfile.vtk outputfile.vtk
+\end{verbatim}
+You may not define any path. So it considers the current directory for both input and output path:
+\begin{verbatim}
+$ extractboundary inputfile.vtk outputfile.vtk
+\end{verbatim}
+If user do not specify output file, it writes output file with the same name as input file name with a \texttt{-boundary} suffix and the same file extension of input file.
+\begin{verbatim}
+$ extractboundary /input-path/inputfile.vtk
+\end{verbatim}
+or
+\begin{verbatim}
+$ extractboundary inputfile.vtk
+\end{verbatim}
+In this case, output file name would be \texttt{inputfile-boundary.vtk}.</p>
+
+<p>For help, use \texttt{-h}, for get program information use \texttt{-i} and for see the license, use \texttt{-l} options.
+\begin{verbatim}
+$ extractboundary -h
+$ extractboundary -i
+$ extractboundary -l
+\end{verbatim}
+A sample vtk output file is similar to the following:
+\lstinputlisting[caption={Sample output vtk file},label=vtk,style=my-listing-style]{/home/sia/code/projvtk/Filter/ExtractBoundary/doc/OutputData.txt}</p>
+
+<p>% ---------------------
+% ParaView Plugin Usage
+% ---------------------</p>
+
+<p>\section{ParaView Plugin Usage}</p>
+
+<p>Figures \ref{png-1} to \ref{png-4} show how to load the plugin and use it. Also Figures \ref{pdf-1} to \ref{pdf-6} illistrate how the filter is implemented on a 2D unstructured grid.</p>
+
+<p>\begin{figure}[hb]
+\centering
+\includegraphics[width=0.5\textwidth]{images/1.png}
+\caption{Options of the filter in Properties toolbar}
+\label{png-1}
+\end{figure}</p>
+
+<p>\begin{figure}[hb]
+\centering
+\includegraphics[width=0.5\textwidth]{images/2.png}
+\caption{Manage Plugins}
+\label{png-2}
+\end{figure}</p>
+
+<p>\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{images/3.png}
+\caption{Plugin Manager}
+\label{png-3}
+\end{figure}</p>
+
+<p>\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{images/4.png}
+\caption{Find Extract Boundary filter in Extention sub-menu}
+\label{png-4}
+\end{figure}</p>
+
+<p>\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{images/1.pdf}
+\caption{An unstructured 2D grid with cavities, bay and acute boundary edges}
+\label{pdf-1}
+\end{figure}</p>
+
+<p>\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{images/2.pdf}
+\caption{Outer boundary is extracted from rest of the grid}
+\label{pdf-2}
+\end{figure}</p>
+
+<p>\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{images/3.pdf}
+\caption{Outer and all inner boundaries are extracted from rest of the grid}
+\label{pdf-3}
+\end{figure}</p>
+
+<p>\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{images/4.pdf}
+\caption{Points with red colors are zero velocity points. Blue points have non zero velocities.}
+\label{pdf-4}
+\end{figure}</p>
+
+<p>\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{images/5.pdf}
+\caption{Inward Normal vectors at each boundary point}
+\label{pdf-5}
+\end{figure}</p>
+
+<p>\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{images/6.pdf}
+\caption{Outward Normal vectors at each boundary point}
+\label{pdf-6}
+\end{figure}</p>
+
+<p>% -------
+% License
+% -------</p>
+
+<p>\newpage</p>
+
+<p>\section[License]{License \footnote{Copyright \copyright~2013 Siavash Ameli}}</p>
+
+<p>This source code is provided `as-is', without any express or implied warranty. In no event will the author be held liable for any damages arising from the use of this software.</p>
+
+<p>Permission is granted to anyone to use this software for non commercial purpose, to alter it and redistribute it freely, subject to the following restrictions:
+\begin{enumerate}
+    \item The origin of this source code must not be misrepresented; you must not claim that you wrote the original source code. </p>
+
+<pre><code>\item You may modify or alter the source code at your own risk, provided that such modifications are extensively commented. Altered source versions must not be misrepresented as being the original source code.
+
+\item Source code may not be redistributed in any way. You may distribute the target binary for non-commercial purposes.
+
+\item If you use this source code in a non-commercial product, an acknowledgment in the product documentation would be appreciated.
+
+\item This notice may not be removed or altered from any source distribution.
+</code></pre>
+
+<p>\end{enumerate}</p>
+
+<p>% ----------
+% Bug Report
+% ----------</p>
+
+<p>\section{Bug Report}
+Any bug reports and comments are appreciated. You may report bugs in github \footnote{\url{<a href="https://github.com/ameli/extractboundary%7D">https://github.com/ameli/extractboundary}</a>}, Launchpad \footnote{\href{<a href="https://bugs.launchpad.net/%7Eameli%7D%7B%5Ctexttt%7Bhttps://bugs.launchpad.net/%24%5Csim%24ameli%7D%7D">https://bugs.launchpad.net/~ameli}{\texttt{https://bugs.launchpad.net/$\sim$ameli}}</a>} or send email \footnote{\href{mailto:\MyEmail}{\protect\nolinkurl{\MyEmail}}}.</p>
+
+<p>% ---------------
+% Acknowledgement
+% ---------------</p>
+
+<p>\section{Acknowledgement}</p>
+
+<p>This work was supported by the National Science Foundation, award number 1047963.</p>
+
+<p>\end{document}</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Extract Boundary maintained by <a href="https://github.com/ameli">ameli</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
