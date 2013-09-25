@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="ReText 2.1.6">
+  <title>New document</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<p>This package has been created to facilitate ParaView users that interact with two dimensional data grids. This package is utilized as a ParaView plugin, so the end users could take advantage of it as a new Filter. The <em>Extract Boundary</em> filter extracts boundaries of a 2D grid. It is robust to concave geometries, unusual cell links in a boundary point and acute and narrow bay-like shapes. Furthermore, user may opt for extracting all inner boundaries, such as lakes. This filter also identifies points with zero velocity. Inward or outward normal vectors are also calculated at each point.</p>
+<p>The program accepts various grid types such as structured or unstructured grids. Also it works well with different two dimensional cell types, for instance triangular, polygons, etc. Moreover, multiple file formats as supported. Common file formats are legacy <code>*.vtk</code> and binary <code>*.vtu</code> extensions.</p>
+<h1>Build Source</h1>
+<p>User can build the code from source. You can obtain the source code from <a href="https://github.com/ameli/extractboundary">github repository</a>. Please install <code>git</code> package:</p>
+<p><code>sudo apt-get install git</code></p>
+<p>Then, create a build directory and download the source code inside the build directory:</p>
+<pre><code>$ mkdir /tmp/ExtractBoundary
+$ cd /tmp/ExtractBoundary
+$ git clone git://github.com/ameli/extract-boundary
+</code></pre>
+<p>Now, build the code:</p>
+<pre><code>$ cmake .
+$ make
+$ sudo make install
+$ cd ..
+$ rm -r /tmp/ExtractBoundary
+</code></pre>
+<p>Installation is system-wide for all users.</p>
+<h1>Install Binary</h1>
+<p>You may use binary package instead of building code from source. Binary installation is available for Ubuntu operating system. Follow these commands in Ubuntu terminal:</p>
+<pre><code>$ sudo add-apt-repository ppa:ameli/extractboundary
+$ sudo apt-get update
+$ sudo apt-get install extractboundary
+</code></pre>
+<h1>Options</h1>
+<p>Filter has the following options:</p>
+<ul>
+<li><strong>Search Boundary Mode</strong> can be Outer boundary or outer and all inner boundaries. Default is on searching only outer boundaries, which is O(sqrt(n)). Inner and outer boundary search is in order of O(n).</li>
+<li><strong>Extract Velocity Boundary</strong> is boolean. Default is on <code>true</code>.</li>
+<li><strong>Calculate Normals</strong> is boolean. Default value is set to <code>true</code>.</li>
+<li><strong>Normals Outward</strong> is boolean. Default value is set to <code>false</code>.</li>
+</ul>
+<h1>Program Usage</h1>
+<p>You can use the program either in terminal or as a ParaView plugin. Here are examples to use it in terminal:</p>
+<p><code>$ extractboundary /input-path/inputfile.vtk /output-path/outputfile.vtk</code></p>
+<p>You can also define only output filename without path. In this case, program writes output file in the same directory of input path.</p>
+<p><code>$ extractboundary /input-path/inputfile.vtk outputfile.vtk</code></p>
+<p>You may not define any path. So it considers the current directory for both input and output path:</p>
+<p><code>$ extractboundary inputfile.vtk outputfile.vtk</code></p>
+<p>If user do not specify output file, it writes output file with the same name as input file name with a <code>-boundary</code> suffix and the same file extension of input file.</p>
+<p><code>$ extractboundary /input-path/inputfile.vtk</code></p>
+<p>or</p>
+<p><code>$ extractboundary inputfile.vtk</code></p>
+<p>In this case, output file name would be <code>inputfile-boundary.vtk</code>.</p>
+<p>For help, use <code>-h</code>, for get program information use <code>-i</code> and for see the license, use <code>-l</code> options.</p>
+<pre><code>$ extractboundary -h
+$ extractboundary -i
+$ extractboundary -l
+</code></pre>
+<p>A sample vtk output file is similar to the following:</p>
+<pre><code># vtk DataFile Version 3.0
+vtk output
+ASCII
+DATASET POLYDATA
+POINTS 55 float
+4 14 0 1 12 0 2 11 0
+1 10 0 1 9 0 2 8 0
+3 6 0 2 5 0 4 2 0
+...
+
+VERTICES 55 110
+1 0
+1 1
+1 2
+...
+
+POLYGONS 3 30
+14 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+8 26 27 28 29 30 31 32 33
+8 34 35 36 37 38 39 40 41
+
+POINT_DATA 55
+NORMALS NormalVectors double
+0.0621374 -0.998068 0 0.995133 -0.0985376 0 1 0 0
+0.92388 -0.382683 0 0.92388 0.382683 0 0.811242 0.58471 0
+0.987087 -0.160182 0 0.995133 -0.0985376 0 0.471858 0.881675 0
+...
+
+FIELD FieldData 1
+VelocityBoundary 1 55 unsigned_int
+0 1 1 1 0 0 0 0 0
+0 0 0 0 0 0 0 1 1
+1 0 0 0 0 0 0 0 0
+...
+</code></pre>
+<h1>ParaView Plugin Usage</h1>
+<p>Figures \ref{png-1} to \ref{png-4} show how to load the plugin and use it. Also Figures \ref{pdf-1} to \ref{pdf-6} illistrate how the filter is implemented on a 2D unstructured grid.</p>
+<p><img alt="Options of the filter in Properties toolbar" src="https://raw.github.com/ameli/extract-boundary/master/doc/images/1.png" /></p>
+<p><img alt="Manage Plugins" src="https://raw.github.com/ameli/extract-boundary/master/doc/images/2.png" /></p>
+<p><img alt="Plugin Manager" src="https://raw.github.com/ameli/extract-boundary/master/doc/images/3.png" /></p>
+<p><img alt="Find Extract Boundary filter in Extention sub-menu" src="https://raw.github.com/ameli/extract-boundary/master/doc/images/4.png" /></p>
+<p><img alt="An unstructured 2D grid with cavities, bay and acute boundary edges" src="https://raw.github.com/ameli/extract-boundary/master/doc/images/5.png" /></p>
+<p><img alt="Outer boundary is extracted from rest of the grid" src="https://raw.github.com/ameli/extract-boundary/master/doc/images/6.png" /></p>
+<p><img alt="Outer and all inner boundaries are extracted from rest of the grid" src="https://raw.github.com/ameli/extract-boundary/master/doc/images/7.png" /></p>
+<p><img alt="Points with red colors are zero velocity points. Blue points have non zero velocities." src="https://raw.github.com/ameli/extract-boundary/master/doc/images/8.png" /></p>
+<p><img alt="Inward Normal vectors at each boundary point" src="https://raw.github.com/ameli/extract-boundary/master/doc/images/9.png" /></p>
+<p><img alt="Outward Normal vectors at each boundary point" src="https://raw.github.com/ameli/extract-boundary/master/doc/images/10.png" /></p>
+<h1>License</h1>
+<p>Copyright 2013 Siavash Ameli</p>
+<p>This source code is provided <em>as-is</em>, without any express or implied warranty. In no event will the author be held liable for any damages arising from the use of this software.</p>
+<p>Permission is granted to anyone to use this software for non commercial purpose, to alter it and redistribute it freely, subject to the following restrictions:
+<em> The origin of this source code must not be misrepresented; you must not claim that you wrote the original source code. 
+</em> You may modify or alter the source code at your own risk, provided that such modifications are extensively commented. Altered source versions must not be misrepresented as being the original source code.
+<em> Source code may not be redistributed in any way. You may distribute the target binary for non-commercial purposes.
+</em> If you use this source code in a non-commercial product, an acknowledgment in the product documentation would be appreciated.
+* This notice may not be removed or altered from any source distribution.</p>
+<h1>Bug Report</h1>
+<p>Any bug reports and comments are appreciated. You may report bugs in <a href="https://github.com/ameli/extractboundary">github</a>, <a href="https://bugs.launchpad.net/~ameli">Launchpad</a>.</p>
+<h1>Acknowledgement</h1>
+<p>This work was supported by the National Science Foundation, award number 1047963.</p>
+</body>
+</html>
