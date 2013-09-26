@@ -289,6 +289,9 @@ vtkIdType ExtractBoundary::FindAdjacentBoundaryPoint(
             }
         }
     }
+
+    // Else, return an error with negative Id
+    return -1;
 }
 
 // ======================
@@ -390,7 +393,7 @@ void ExtractBoundary::FindWholeOuterBoundary(vtkDataSet *input,vtkPolyData *outp
     unsigned int NumberOfProcessedPoints = 0;
     while(!BoundaryRepeated)
     {
-        if(NumberOfProcessedPoints >= input->GetNumberOfPoints())
+        if(NumberOfProcessedPoints >= static_cast<unsigned int>(input->GetNumberOfPoints()))
         {
             vtkErrorMacro("Can not find a closed boundary curve.");
         }
@@ -454,7 +457,7 @@ void ExtractBoundary::FindWholeOuterAndInnerBoundaries(vtkDataSet *input, vtkPol
     // Create PointProcessed array
     vtkIdType NumberOfPoints = input->GetNumberOfPoints();
     bool *PointsProcessed = new bool[NumberOfPoints];
-    for(unsigned int i=0; i<NumberOfPoints; i++)
+    for(unsigned int i=0; i < static_cast<unsigned int>(NumberOfPoints); i++)
     {
         PointsProcessed[i] = false;
     }
@@ -515,7 +518,7 @@ void ExtractBoundary::FindWholeOuterAndInnerBoundaries(vtkDataSet *input, vtkPol
             unsigned int NumberOfProcessedPoints = 0;
             while(!BoundaryRepeated)
             {
-                if(NumberOfProcessedPoints >= NumberOfPoints)
+                if(NumberOfProcessedPoints >= static_cast<unsigned int>(NumberOfPoints))
                 {
                     vtkErrorMacro("Can not find a closed boundary curve.");
                 }
@@ -623,10 +626,10 @@ int ExtractBoundary::CheckSharedCells(
 
     // Check Shared Cells
     int SharedCellId = -2;
-    for(unsigned int CellIdIndexOfPoint1=0; CellIdIndexOfPoint1 < NumberOfCellsOfPoint1; CellIdIndexOfPoint1++)
+    for(unsigned int CellIdIndexOfPoint1=0; CellIdIndexOfPoint1 < static_cast<unsigned int>(NumberOfCellsOfPoint1); CellIdIndexOfPoint1++)
     {
         vtkIdType CellIdOfPoint1 = CellIdsOfPoint1->GetId(CellIdIndexOfPoint1);
-        for(unsigned int CellIdIndexOfPoint2=0; CellIdIndexOfPoint2 < NumberOfCellsOfPoint2; CellIdIndexOfPoint2++)
+        for(unsigned int CellIdIndexOfPoint2=0; CellIdIndexOfPoint2 < static_cast<unsigned int>(NumberOfCellsOfPoint2); CellIdIndexOfPoint2++)
         {
             vtkIdType CellIdOfPoint2 = CellIdsOfPoint2->GetId(CellIdIndexOfPoint2);
 
@@ -694,7 +697,7 @@ void ExtractBoundary::FindVelocityBoundary(vtkDataSet *input, vtkPolyData *outpu
     // float *pVelocities = static_cast<float*>(Velocities->GetVoidPointer(0));
 
     // Look for near zero velocity
-    unsigned int a = VelocityArray->GetNumberOfTuples();
+    // unsigned int a = VelocityArray->GetNumberOfTuples();
     for(vtkIdType i=0; i<output->GetNumberOfPoints(); i++)
     {
         vtkIdType IdInInputGrid = this->BoundaryPointIdsInInputGrid->GetId(i);

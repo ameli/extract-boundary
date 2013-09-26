@@ -51,5 +51,5 @@ Its free and open source under GNU/zlib license. Please see [License.txt](https:
 
 ## Author
 Siavash Ameli  
-[ShaddenLab](http://shaddenlab.berkeley.edu/)  
+[Shadden Research Group](http://shaddenlab.berkeley.edu/)  
 University of California, Berkeley

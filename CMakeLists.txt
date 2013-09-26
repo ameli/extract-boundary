@@ -22,7 +22,7 @@ project(ExtractBoundary CXX)
 # ======================
 
 # ParaView plugin option
-set(BUILD_PARAVIEW_PLUGIN ON CACHE BOOL "Build ParaView plugin?")
+set(BUILD_PARAVIEW_PLUGIN OFF CACHE BOOL "Build ParaView plugin?")
 
 # Avoid confliction of Paraview and VTK inclusion
 if(BUILD_PARAVIEW_PLUGIN)
@@ -42,6 +42,29 @@ else(BUILD_PARAVIEW_PLUGIN)
         message(FATAL_ERROR "VTK not found.")
     endif(VTK_FOUND)
 endif(BUILD_PARAVIEW_PLUGIN)
+
+# ==============
+# Compiler Flags
+# ==============
+
+# Initialize CXX FLAGS
+set(CMAKE_CXX_FLAGS                "-Wall -std=c++0x ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG          "-O0 -g")
+set(CMAKE_CXX_FLAGS_MINSIZEREL     "-Os -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE        "-O4 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
+
+# Compiler-specific C++11 activation
+if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
+    execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
+    if (NOT (GCC_VERSION VERSION_GREATER 4.4 OR GCC_VERSION VERSION_EQUAL 4.4))
+        message(FATAL_ERROR "${PROJECT_NAME} Requires g++ 4.4 or greater.")
+    endif()
+elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+else()
+    message(FATAL_ERROR "Your C++ compiler does not support C++11.")
+endif()
 
 # ================
 # Source Inclusion

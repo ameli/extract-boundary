@@ -27,6 +27,14 @@
 #include <string.h>
 #include <cstdlib>
 
+// ======
+// Macros
+// ======
+
+#ifndef MAX_CHAR_LENGTH
+#define MAX_CHAR_LENGTH 512
+#endif
+
 // ===========
 // Constructor
 // ===========
@@ -36,6 +44,10 @@ CommandLineParser::CommandLineParser(int ArgC, char *ArgV[])
     // Member data
     this->argc = ArgC;
     this->argv = ArgV;
+
+    this->InputFileName = NULL;
+    this->InputFileBaseName = NULL;
+    this->InputFileExtension = NULL;
 
     // Check
     this->CheckArguments();
@@ -51,6 +63,19 @@ CommandLineParser::CommandLineParser(int ArgC, char *ArgV[])
 
 CommandLineParser::~CommandLineParser()
 {
+    // Input file base name
+    if(this->InputFileBaseName != NULL)
+    {
+        delete [] this->InputFileBaseName;
+        this->InputFileBaseName = NULL;
+    }
+
+    // Input file extension
+    if(this->InputFileExtension != NULL)
+    {
+        delete [] this->InputFileExtension;
+        this->InputFileExtension = NULL;
+    }
 }
 
 // ===============
@@ -75,7 +100,7 @@ void CommandLineParser::CheckOptions()
     bool UnknownOptionEntered = false;
 
     // Check each input argument
-    for(unsigned int i=1; i<this->argc; i++)
+    for(unsigned int i=1; i< static_cast<unsigned int>(this->argc); i++)
     {
         // Check if input is option
         if(strncmp(argv[i],"-",1))
@@ -116,7 +141,7 @@ void CommandLineParser::ProcessOptions()
     bool UnknownOptionEntered = false;
 
     // Check each input argument
-    for(unsigned int i=1; i<this->argc; i++)
+    for(unsigned int i=1; i<static_cast<unsigned int>(this->argc); i++)
     {
         // Check if input is option
         if(strncmp(argv[i],"-",1))
@@ -198,6 +223,10 @@ void CommandLineParser::FindInputFileArgument()
 
     // first arg appears to be input file
     this->InputFileName = this->argv[1];
+
+    // Allocate mempry for member data
+    this->InputFileBaseName = new char[MAX_CHAR_LENGTH];
+    this->InputFileExtension = new char[MAX_CHAR_LENGTH];
 
     // Extract file extension
     CommandLineParser::DecomposeFileName(
