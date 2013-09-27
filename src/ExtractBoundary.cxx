@@ -697,7 +697,6 @@ void ExtractBoundary::FindVelocityBoundary(vtkDataSet *input, vtkPolyData *outpu
     // float *pVelocities = static_cast<float*>(Velocities->GetVoidPointer(0));
 
     // Look for near zero velocity
-    // unsigned int a = VelocityArray->GetNumberOfTuples();
     for(vtkIdType i=0; i<output->GetNumberOfPoints(); i++)
     {
         vtkIdType IdInInputGrid = this->BoundaryPointIdsInInputGrid->GetId(i);
@@ -706,7 +705,7 @@ void ExtractBoundary::FindVelocityBoundary(vtkDataSet *input, vtkPolyData *outpu
         // unsigned int VelocityMagnitude =
         //     fabs(pVelocities[3*IdInInputGrid]) +
         //     fabs(pVelocities[3*IdInInputGrid+1]) +
-        //     fabs(pVelocities[3*IdInInputGrid+2]);
+            fabs(pVelocities[3*IdInInputGrid+2]);
         unsigned int VelocityMagnitude =
             fabs(pVelocities[0]) +
             fabs(pVelocities[1]) +
@@ -735,7 +734,8 @@ void ExtractBoundary::FindNormals(vtkDataSet *input,vtkPolyData *output)
     // Polygons and Polygon
     vtkSmartPointer<vtkCellArray> Polygons = output->GetPolys();
     unsigned int NumberOfPolygons = Polygons->GetNumberOfCells();
-    vtkSmartPointer<vtkIdList> Polygon[NumberOfPolygons];
+    vtkSmartPointer<vtkIdList> Polygon[NumberOfPolygons]; // MAC problem, use line below instead
+    // vtkIdList *Polygon[NumberOfPolygons];
 
     // initialize Normals Array
     vtkSmartPointer<vtkDoubleArray> Normals = vtkSmartPointer<vtkDoubleArray>::New();
@@ -745,7 +745,8 @@ void ExtractBoundary::FindNormals(vtkDataSet *input,vtkPolyData *output)
     // for each Polygon
     for(unsigned int i=0; i<NumberOfPolygons; i++)
     {
-        Polygon[i] = vtkSmartPointer<vtkIdList>::New();
+        Polygon[i] = vtkSmartPointer<vtkIdList>::New(); // Mac problem, use line below instead, them do deletion
+        // Polygon[i] = vtkIdList::New();
         int PolygonStatus = Polygons->GetNextCell(Polygon[i]);
         if(PolygonStatus == 0)
         {
