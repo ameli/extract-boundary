@@ -278,9 +278,9 @@ void CommandLineParser::PrintOptions()
 
 void CommandLineParser::PrintAbout()
 {
-    std::cout << "Author: Siavash Ameli <sameli@iit.edu" << std::endl;
-    std::cout << "Flow Physics Group" << std::endl;
-    std::cout << "Illinois Institute Of Technology" << std::endl;
+    std::cout << "Author: Siavash Ameli <sameli at berkeley dot edu>" << std::endl;
+    std::cout << "Shadden Research Group" << std::endl;
+    std::cout << "University of California, Berkeley" << std::endl;
 }
 
 // =============
