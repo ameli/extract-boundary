@@ -314,15 +314,21 @@ void ExtractBoundary::GetPointConnectivity(
     // Loop Over neighbor cells
     for(vtkIdType CellListIndex=0; CellListIndex<NumberOfNeighborCells; CellListIndex++)
     {
+        // Select a cell from neighbor cells
         vtkIdType CellId = CellListIds->GetId(CellListIndex);
+
+        // Get points of selected cell
         vtkSmartPointer<vtkIdList> CellPointsList = vtkSmartPointer<vtkIdList>::New();
         input->GetCellPoints(CellId,CellPointsList);
         vtkIdType NumberOfCellPoints = CellPointsList->GetNumberOfIds();
 
-        // Loop over points in each cell
+        // Loop over points in selected neighbor cell
         for(vtkIdType PointIndex=0; PointIndex<NumberOfCellPoints; PointIndex++)
         {
+            // Select a point from points of selected neighbor cell
             vtkIdType CheckPointId = CellPointsList->GetId(PointIndex);
+
+            // Check if selected point is not the original inquiry point
             if(CheckPointId != CurrentPointId)
             {
                 bool RepeatedBefore = false;
@@ -564,8 +570,11 @@ void ExtractBoundary::FindWholeOuterAndInnerBoundaries(vtkDataSet *input, vtkPol
     output->SetPolys(BoundaryPolygons);
 
     // Freed Memory
-    delete [] PointsProcessed;
-    PointsProcessed = NULL;
+    if(PointsProcessed != NULL)
+    {
+        delete [] PointsProcessed;
+        PointsProcessed = NULL;
+    }
 }
 
 // =================
