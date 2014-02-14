@@ -714,7 +714,7 @@ void ExtractBoundary::FindVelocityBoundary(vtkDataSet *input, vtkPolyData *outpu
         // unsigned int VelocityMagnitude =
         //     fabs(pVelocities[3*IdInInputGrid]) +
         //     fabs(pVelocities[3*IdInInputGrid+1]) +
-            fabs(pVelocities[3*IdInInputGrid+2]);
+        //     fabs(pVelocities[3*IdInInputGrid+2]);
         unsigned int VelocityMagnitude =
             fabs(pVelocities[0]) +
             fabs(pVelocities[1]) +
