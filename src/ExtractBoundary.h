@@ -148,8 +148,8 @@ class ExtractBoundary : public vtkPolyDataAlgorithm
         vtkSmartPointer<vtkIdList> BoundaryPointIdsInInputGrid;
 
     private:
-        ExtractBoundary(const ExtractBoundary & rhs);
-        void operator=(const ExtractBoundary & rhs);
+        ExtractBoundary(const ExtractBoundary & rhs);   // Not implemented.
+        void operator=(const ExtractBoundary & rhs);   // Not implemented.
 };
 
 #endif
