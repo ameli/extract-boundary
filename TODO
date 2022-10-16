@@ -1,0 +1,28 @@
+-install has problems when I compile "libExtractBoundary.so". It can not find shared library. So the 
+  "install" command in cmake should install the file of library too.
+
+- also, install command in cmake should install the license file, doc and man pages.
+  currently, the option -l (for license) gives us error.
+  $ extractboundary -l # it can not find license file.
+
+- in CommandLineParser, two methods "FindInputFileArgument" and "FindOutputFileArgument" should
+  be completed. They aim to find input and output filenames from argv[], and leave other options.
+
+- installer should detect it ParaView is installed, and automatically copy *.so file inside plugin folder.
+
+- intaller also can detect if vtk (a minimum vtk) is installed or not.
+
+- support both vtk and vtu (reader)
+
+- MAC issues:
+  in ExtractBoundary.cxx, in FindNormal function, at lines 737 and 748, Polygon is defined as "array" of objects,
+  which each object is vtkIdList class. It seams that compilers in MAC doies not support smart pointer when the pointer 
+  is an array itself. So instead of:
+      vtkSmartPointer<vtkIList> Polygons[NumberOfPolygons] = vtkSmartPointer<vtkIdList>::New();
+  use:
+      vtkIList *Polygons[NumberOfPolygons] = vtkIdList::New(); ;
+  and then delete
+    delete [] Polygons;Q
+
+- MAC issues in CMakeLists.txt
+  All part of "Compiler flags" in the CMakeLists.txt file should be commented when using MAC!

@@ -3,7 +3,7 @@
 This program extracts all __inner__ and __outer__ boundaries of 2D grids and identidies __zero-velocity__ boundary points. Moreover, __inward__ or __outward__ normal vectors on boundary points are calculated. You can use 2D grids with __any type of cell__ and various file extentions such as `*.vtk` and `*.vtu`.
 
 ## User Guide
-Please refer to [doc/UserGuide.pdf](https://github.com/ameli/extract-boundary/raw/master/doc/UserGuide.pdf), or the [wiki](https://github.com/ameli/extract-boundary/wiki/Extract-Boundary) of the project.
+Please refer to [documentation page](https://ameli.github.io/extract-boundary) or [doc/UserGuide.pdf](https://github.com/ameli/extract-boundary/raw/master/doc/UserGuide.pdf).
 
 ## Quick installation
 You may install by building source or getting the ready package from Ubuntu repos.

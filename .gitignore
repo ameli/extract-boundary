@@ -18,7 +18,7 @@ log/*
 # Debian
 # ======
 
-debian/*
+# debian/*
 
 # ===========
 # Binary Data
@@ -62,5 +62,5 @@ doc/*.synctex.gz
 
 *~
 *.log
-TODO
+# TODO
 Notes

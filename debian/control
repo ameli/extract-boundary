@@ -1,0 +1,16 @@
+Source: extractboundary
+Section: devel
+Priority: optional
+Maintainer: Siavash Ameli <sameli@hawk.iit.edu>
+Build-Depends: cmake, build-essential
+Homepage: http://ameli.github.com/extract-boundary/
+
+Package: extractboundary
+Architecture: any
+Depends: 
+Description: Extract boundaries of 2D vtk grid
+ This program extracts outer and inner boundaries of a two
+ dimensional grid, identifies zero velocity points on boundary
+ and calculates inward or outward normals at boundary points.
+ It accepts many types of grid cells, as well as file formats,
+ such as *.vtk and *.vtu format.
